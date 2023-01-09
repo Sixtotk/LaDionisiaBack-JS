@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon index.js",
     "start": "nodemon -L",
     "test": "mocha -w ./tests/**/*.spec.js"
   },
@@ -14,14 +15,17 @@
     "npm": ">=6.14.6"
   },
   "dependencies": {
-    "body-parser": "^1.19.0",
-    "cookie-parser": "^1.4.5",
+    "@auth0/nextjs-auth0": "^2.0.1",
+    "axios": "^1.2.1",
     "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
     "morgan": "^1.10.0",
-    "pg": "^8.5.1",
-    "sequelize": "^6.3.5"
+    "body-parser": "^1.20.1",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "pg": "^8.8.0",
+    "sequelize": "^6.27.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "supertest-session": "^4.1.0",
