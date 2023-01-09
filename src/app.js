@@ -2,6 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const cors = require('cors');
 const routes = require('./routes/index.js');
 
 require('./db.js');
@@ -9,7 +10,14 @@ require('./db.js');
 const server = express();
 
 server.name = 'API';
+const corsConfig = {
+  origin: ['http://localhost:3000'],
+  credentials: true,
+  methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+  allowedHeaders: ['Content-Type']
+};
 
+server.use(cors(corsConfig))
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 server.use(bodyParser.json({ limit: '50mb' }));
 server.use(cookieParser());
