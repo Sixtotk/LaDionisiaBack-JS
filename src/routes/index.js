@@ -4,6 +4,7 @@ const { Router } = require('express');
 const Products = require('./productRoutes')
 const auth0EndPointsRoutes = require('./auth0EndPointsRoutes');
 const userRoutes = require('./userRoutes');
+const Comment = require('./commentRoutes')
 
 
 const router = Router();
@@ -13,6 +14,7 @@ const router = Router();
 router.use('/products', Products)
 router.use('/auth0', auth0EndPointsRoutes);
 router.use('/users', userRoutes);
+router.use('/comments', Comment)
 
 
 module.exports = router;

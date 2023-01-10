@@ -12,12 +12,12 @@ const getComment = async (req, res) => {
 
 const postComment = async (req,res) =>{
   const { content } = req.body
-  const { productId, userId } = req.query
+  //const { productId, /*userId*/ } = req.query
 
   try {
     if (content) {
       const comment = await Comment.create(
-        { content, userId }
+        { content, /*userId*/ }
       );
       
       const product = await Product.findOne({ where: { id: productId } })

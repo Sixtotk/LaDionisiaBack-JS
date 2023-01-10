@@ -40,7 +40,22 @@ const updateProduct = async (req,res) =>{
 
 const getAllProducts = async (req, res) => {
   try {
-
+    
+    let wine = req.query.wine;
+    
+    if(wine){
+      let wineFind = await Product.findAll({
+        where: {
+          disabled: false, 
+          wine: { [Op.iLike]: `%${wine}%`}
+        }})
+      if(!wineFind.length){
+        res.status(404).send('Product not found');
+      }else{
+        res.status(200).json(wineFind)
+      }
+     }
+    if(!wine){
     let allWinesDb = await Product.findAll({
       where: {
         disabled: false
@@ -87,7 +102,7 @@ const getAllProducts = async (req, res) => {
 			}
       
 			else res.status(200).json(allWinesDb);
-    } catch (err) {
+    }} catch (err) {
         res.status(500).send({ msg: "Server error", error: err.message });
       }
 }
@@ -139,7 +154,7 @@ const postProduct = async (req, res) => {
 const getDisabledProducts = async (req, res) => {
   try {
     const disabledProducts = await Product.findAll({
-      where: { disabled: true },
+      where: { disabled: true }
     });
     res.status(200).json(disabledProducts);
   } catch (err) {
@@ -149,8 +164,13 @@ const getDisabledProducts = async (req, res) => {
 
 const getFeatured = async (req, res) => {
   try {
-    const featured = await Product.findAll({ where: { featured: true } });
-    res.status(200).json(featured);
+    const featureds = await Product.findAll({ 
+      where: {
+        featured: true,
+        disabled: false  
+        
+      }});
+    res.status(200).json(featureds);
   } catch (err) {
     res.status(500).json(err.message);
   }
@@ -158,13 +178,20 @@ const getFeatured = async (req, res) => {
 
 const getBestRated = async (req, res) => {
   try {
-    let {ratingValues} = req.body;
 
-    const [firstValue, secondValue] = ratingValues
+    let {from, to} = req.query
+    const firstValue = Number(from)
+    const secondValue = Number(to)
+    const array = [firstValue, secondValue]
+    const [f, s] = array
 
+    
     const bestRated = await Product.findAll({
-      where: { rating: { [Op.between]: [firstValue, secondValue] } },
-    });
+
+      where: { 
+      disabled: false,
+      rating: { [Op.between]: [f, s] } 
+      }});
     res.status(200).json(bestRated);
   } catch (err) {
     res.status(500).json(err.message);
@@ -173,7 +200,10 @@ const getBestRated = async (req, res) => {
 
 const getOnSale = async (req, res) => {
   try {
-    const onSale = await Product.findAll({ where: { onSale: true } });
+    const onSale = await Product.findAll({ where: {
+      disabled: false, 
+      onSale: true 
+    }});
     res.status(200).json(onSale);
   } catch (err) {
     res.status(500).json(err.message);
@@ -184,8 +214,11 @@ const getWineTypes = async (req, res) => {
   try {
     const {type} = req.params;
     const foundWineType = await Product.findAll({
-      where: { type: { [Op.like]: type } },
-    });
+
+      where: { 
+        disabled: false,
+        type: { [Op.like]: type } 
+      }});
     res.status(200).json(foundWineType);
   } catch (err) {
     res.status(500).json(err.message);
@@ -196,8 +229,11 @@ const getWineByCountry = async (req, res) => {
   try {
     const {country} = req.params;
     const wineByCountry = await Product.findAll({
-      where: { country: { [Op.like]: country} },
-    });
+      where: { 
+        disabled: false, 
+        country: { [Op.like]: country} 
+      }});
+
     res.status(200).json(wineByCountry);
   } catch (err) {
     res.status(500).json(err.message);
@@ -208,8 +244,10 @@ const getWineByRegion = async (req, res) => {
   try {
     const {region} = req.params;
     const wineByregion = await Product.findAll({
-      where: { region: { [Op.like]: region } },
-    });
+      where: { 
+        disabled: false,
+        region: { [Op.like]: region } 
+      }});
     res.status(200).json(wineByregion);
   } catch (err) {
     res.status(500).json(err.message);
@@ -218,13 +256,18 @@ const getWineByRegion = async (req, res) => {
 
 const getWineByYear = async (req, res) => {
   try {
-    let {yearValues} = req.body;
-    
-    const [ firstValue, secondValue ] = yearValues
+    let {from, to} = req.query;
 
+    const firstValue = Number(from)
+    const secondValue = Number(to)
+    const array = [firstValue, secondValue]
+    const [f, s] = array
+    
     const wineYear = await Product.findAll({
-      where: { year: { [Op.between]: [firstValue, secondValue] } },
-    });
+      where: {
+        disabled: false, 
+        year: { [Op.between]: [firstValue, secondValue] } 
+      }});
     res.status(200).json(wineYear);
   } catch (err) {
     res.status(500).json(err.message);
