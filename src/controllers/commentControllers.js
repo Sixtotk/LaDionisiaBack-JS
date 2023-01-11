@@ -34,6 +34,7 @@ const postComment = async (req,res) =>{
   try {
     if (content) {
       const comment = await Comment.create(
+
         { content, productId, /*userId*/ }
       );
       

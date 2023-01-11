@@ -45,6 +45,8 @@ const { Product, Comment, User } = sequelize.models;
 
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
+User.hasMany(Comment);
+Comment.belongsTo(User);
 
 Product.hasMany(Comment);
 Comment.belongsTo(Product);
