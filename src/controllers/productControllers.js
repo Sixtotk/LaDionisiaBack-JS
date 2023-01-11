@@ -68,7 +68,7 @@ const getAllProducts = async (req, res) => {
       where: {
         disabled: false
       },
-      attributes: ["id", "type","wine", "winery", "year", "country", "region", "rating", "image","description" ]
+      attributes: ["id", "type","wine", "winery", "year", "country", "region", "rating", "image","description","disabled","featured", "onSale", "totalSalesCurrent", "stock"]
     })
 
       if (!allWinesDb.length){
@@ -83,6 +83,8 @@ const getAllProducts = async (req, res) => {
             region: e.region,
             rating: e.rating,
             image: e.image,
+            
+            
 			    }})
 					for(let i = 0; i < data.length; i++){
 						await Product.create({
@@ -101,11 +103,9 @@ const getAllProducts = async (req, res) => {
             where: {
               disabled: false
             },
-						attributes: ["id", "type","wine", "winery", "year", "country", "region", "rating", "image","description" ]
+						attributes: ["id", "type","wine", "winery", "year", "country", "region", "rating", "image","description","disabled","featured", "onSale", "totalSalesCurrent", "stock" ]
 
-					});                 
-
-        
+					});                         
 				return res.status(200).json(allWinesDb)
 			}
       
