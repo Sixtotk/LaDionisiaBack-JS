@@ -17,7 +17,7 @@ const postComment = async (req,res) =>{
   try {
     if (content) {
       const comment = await Comment.create(
-        { content, /*userId*/ }
+        { content, userId }
       );
       
       const product = await Product.findOne({ where: { id: productId } })
