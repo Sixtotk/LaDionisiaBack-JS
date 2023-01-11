@@ -6,6 +6,14 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: false
+    },
+    reports: {
+      type: DataTypes.INTEGER,
+      defaultValue:0
+    },
+    disabled: {
+      type: DataTypes.BOOLEAN,
+      defaultValue:false,
     }
   }, {
     paranoid: true
