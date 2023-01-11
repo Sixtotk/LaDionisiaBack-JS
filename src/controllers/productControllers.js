@@ -1,12 +1,20 @@
 const { Product } = require('../db')
 const { default: axios } = require("axios");
 const { Op } = require("sequelize");
+const fs = require('fs-extra')
+const  {uploadImageProduct}  = require('../claudinary/claudinary')
 
 const updateProduct = async (req,res) =>{
   try {
     const { id } = req.params
 
-  const { winery, wine, rating, country, region, image, year, description, type, disabled, featured, onSale, totalSalesCurrent, stock } = req.body
+  const { winery, wine, rating, country, region, year, description, type, disabled, featured, onSale, totalSalesCurrent, stock } = req.body
+
+  if(req.files?.image){
+    const result = await uploadImageProduct(req.files.image.tempFilePath)
+    image = result.url
+    await fs.unlink(req.files.image.tempFilePath)
+    }
 
   const productFound = await Product.findByPk(id);
 
@@ -119,19 +127,25 @@ const getProductsById = async (req, res) => {
 };
 
 const postProduct = async (req, res) => {
-  const {
-    type,
-    wine,
-    winery,
-    year,
-    rating,
-    country,
-    region,
-    image
-  } = req.body;
-
+  
   try {
-    if (type && wine && winery && year && rating && country && region && image) {
+
+    const {
+      type,
+      wine,
+      winery,
+      year,
+      rating,
+      country,
+      region,
+    } = req.body;
+  
+    if(req.files?.image){
+    const result = await uploadImageProduct(req.files.image.tempFilePath)
+    image = result.url
+    await fs.unlink(req.files.image.tempFilePath)
+    }
+
       const productCreated = await Product.create({
         type,
         wine,
@@ -144,8 +158,6 @@ const postProduct = async (req, res) => {
         description: "The wineries " + winery +  " are located in the valleys of the " + region + " suitable for the cultivation of wine " + wine + ", producing privileged fruits for the elaboration of a good wine " + type + " . Made in " + country + " (DRINKING ALCOHOLIC BEVERAGES IN EXCESS IS HARMFUL)"
       });
       return res.status(200).json(productCreated);
-    } else
-      res.status(400).json({ msg: "Some fields are incorrect, try again" });
   } catch (err) {
     res.status(500).json(err.message);
   }
