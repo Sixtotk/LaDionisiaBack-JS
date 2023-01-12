@@ -58,13 +58,13 @@ const disableUser = async (req,res) =>{
 
 const updateUser = async (req, res) => {
   const { id } = req.params
-  const {name, nickname, email, family_name, given_name } = req.body 
+  const { name, nickname, email, family_name, given_name } = req.body 
   
   try {
     const userDb = await User.findByPk(id)
 
     if(userDb){
-      const userDbUpdated = await userDbUpdated.update({
+      const userDb = await userDb.update({
         name: name,
         nickname: nickname,
         email: email,
@@ -86,5 +86,6 @@ module.exports = {
   loginUser,
   getAllDisabledUsers,
   disableUser,
-  getUserById
+  getUserById,
+  updateUser
 }
