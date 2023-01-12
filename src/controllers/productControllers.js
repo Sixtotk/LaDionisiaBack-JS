@@ -68,7 +68,7 @@ const getAllProducts = async (req, res) => {
       where: {
         disabled: false
       },
-      attributes: ["id", "type","wine", "winery", "year", "country", "region", "rating", "image","description" ]
+      attributes: ["id", "type","wine", "winery", "year", "country", "region", "rating", "image","description","disabled","featured", "onSale", "totalSalesCurrent", "stock" ]
     })
 
       if (!allWinesDb.length){
@@ -83,6 +83,8 @@ const getAllProducts = async (req, res) => {
             region: e.region,
             rating: e.rating,
             image: e.image,
+            
+            
 			    }})
 					for(let i = 0; i < data.length; i++){
 						await Product.create({
@@ -101,11 +103,9 @@ const getAllProducts = async (req, res) => {
             where: {
               disabled: false
             },
-						attributes: ["id", "type","wine", "winery", "year", "country", "region", "rating", "image","description" ]
+						attributes: ["id", "type","wine", "winery", "year", "country", "region", "rating", "image","description","disabled","featured", "onSale", "totalSalesCurrent", "stock" ]
 
-					});                 
-
-        
+					});                         
 				return res.status(200).json(allWinesDb)
 			}
       
@@ -138,6 +138,7 @@ const postProduct = async (req, res) => {
       rating,
       country,
       region,
+      description
     } = req.body;
   
     if(req.files?.image){
@@ -145,7 +146,7 @@ const postProduct = async (req, res) => {
     image = result.url
     await fs.unlink(req.files.image.tempFilePath)
     }
-
+    if(!req.body.description){
       const productCreated = await Product.create({
         type,
         wine,
@@ -156,7 +157,20 @@ const postProduct = async (req, res) => {
         region,
         image,
         description: "The wineries " + winery +  " are located in the valleys of the " + region + " suitable for the cultivation of wine " + wine + ", producing privileged fruits for the elaboration of a good wine " + type + " . Made in " + country + " (DRINKING ALCOHOLIC BEVERAGES IN EXCESS IS HARMFUL)"
-      });
+      }) 
+      return res.status(200).json(productCreated);
+    }
+    const productCreated = await Product.create({
+      type,
+      wine,
+      winery,
+      year,
+      rating,
+      country,
+      region,
+      image,
+      description
+    });
       return res.status(200).json(productCreated);
   } catch (err) {
     res.status(500).json(err.message);
@@ -268,7 +282,7 @@ const getWineByRegion = async (req, res) => {
 
 const getWineByYear = async (req, res) => {
   try {
-    let {from, to} = req.query;
+    let {from, to} = req.body;
 
     const firstValue = Number(from)
     const secondValue = Number(to)
@@ -286,6 +300,15 @@ const getWineByYear = async (req, res) => {
   }
 };
 
+const disableProduct = async (req,res) =>{
+  const { productId } = req.params
+  try {
+    await Product.update({disabled:true},{ where: { id: productId } })
+
+    res.status(200).json({ msg: 'El producto ha sido desabilitado.' })
+  } catch (err) { res.status(500).json(err.message) }
+}
+
 
 module.exports = {
   getAllProducts,
@@ -299,5 +322,6 @@ module.exports = {
   getWineByYear,
   getProductsById,
   getWineByCountry,
-  getWineByRegion
+  getWineByRegion,
+  disableProduct
 };
