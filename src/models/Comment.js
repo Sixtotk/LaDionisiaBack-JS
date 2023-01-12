@@ -8,8 +8,8 @@ module.exports = (sequelize) => {
       unique: false
     },
     reports: {
-      type: DataTypes.INTEGER,
-      defaultValue:0
+      type: DataTypes.BOOLEAN,
+      defaultValue:false
     },
     disabled: {
       type: DataTypes.BOOLEAN,

@@ -8,6 +8,25 @@ const getUsers = async (req, res) => {
   } catch (err) { res.status(500).json(err.message) }
 }
 
+const getUserById = async (req, res) => {
+  try {
+    const { userId } = req.params
+    const userFound = await Comment.findByPk( userId );
+    if(!userFound) return res.status(400).json("user not found");
+    res.status(200).json(userFound);
+  } catch (err) {
+    res.status(500).send({ msg: "Error in the server", error: err.message });
+  }
+};
+
+const getAllDisabledUsers = async (req, res) => {
+  try { 
+    const disabledUsers = await User.findAll({ where: { disabled:true } });
+    if(!disabledUsers) {res.status(400).json("no existen usuarios desabilitados")}
+    else {res.status(200).json(disabledUsers)}
+  } catch (err) { res.status(500).json(err.message) }
+}
+
 const registerUser = async (req, res) => {
   const disabled = false
   const { sub } = req.body
@@ -28,8 +47,58 @@ const loginUser = async (req, res) => {
   } catch (err) { res.status(500).json(err.message) }
 }
 
+
+const deleteUser = async (req, res) => {
+  try {
+    let { id } = req.params; 
+    let findUser = await User.findByPk( id ); 
+    if (!findUser) throw new Error("User not found");
+    await findUser.destroy();
+    res.status(200).json({ msg: "User deleted" });
+    
+  } catch (err) { res.status(500).json(err.message) }
+};
+
+const disableUser = async (req,res) =>{
+  const { userId } = req.params
+  try {
+    await User.update({disabled:true},{ where: { id: userId } })
+
+    res.status(200).json({ msg: 'El Usuario ha sido desabilitado.' })
+  } catch (err) { res.status(500).json(err.message) }
+}
+
+const updateUser = async (req, res) => {
+  const { id } = req.params
+  const { name, nickname, email, family_name, given_name } = req.body 
+  
+  try {
+    const userDb = await User.findByPk(id)
+
+    if(userDb){
+      const userDb = await userDb.update({
+        name: name,
+        nickname: nickname,
+        email: email,
+        family_name: family_name,
+        given_name: given_name,
+      })
+      return res.status(200).json("Usuario modificado con exito!")
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+}
+
+
 module.exports = {
   getUsers,
   registerUser,
-  loginUser
+  loginUser,
+  deleteUser
+  getAllDisabledUsers,
+  disableUser,
+  getUserById,
+  updateUser
+
 }

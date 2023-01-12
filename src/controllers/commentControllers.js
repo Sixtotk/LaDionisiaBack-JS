@@ -10,6 +10,17 @@ const getProductComments = async (req, res) => {
   } catch (err) { res.status(500).json(err.message) }
 }
 
+const getCommentById = async (req, res) => {
+  try {
+    const { commentId } = req.params
+    const commentById = await Comment.findByPk( commentId );
+    if(!commentById) return res.status(400).json("comment not found");
+    res.status(200).json(commentById);
+  } catch (err) {
+    res.status(500).send({ msg: "Error in the server", error: err.message });
+  }
+};
+
 const getAllDisabledComments = async (req, res) => {
   try { 
     const disabledComments = await Comment.findAll({ where: { disabled:true } });
@@ -21,9 +32,9 @@ const getAllDisabledComments = async (req, res) => {
 
 const getAllReportedComments = async (req, res) => {
   try { 
-    const disabledComments = await Comment.findAll({ where: { disabled:true } });
+    const reportedComments = await Comment.findAll({ where: { reports:true } });
 
-    res.status(200).json(disabledComments)
+    res.status(200).json(reportedComments)
   } catch (err) { res.status(500).json(err.message) }
 }
 
@@ -67,6 +78,15 @@ const disableComment = async (req,res) =>{
   } catch (err) { res.status(500).json(err.message) }
 }
 
+const reportComment = async (req,res) =>{
+  const { commentId } = req.params
+  try {
+    await Comment.update({reports:true},{ where: { id: commentId } })
+
+    res.status(200).json({ msg: 'El comentario ha sido reportado con exito!.' })
+  } catch (err) { res.status(500).json(err.message) }
+}
+
 const destroyComment = async (req,res) =>{
   const { commentId } = req.params
   try {
@@ -84,5 +104,7 @@ module.exports = {
   disableComment,
   getAllDisabledComments,
   getAllReportedComments,
-  destroyComment
+  getCommentById,
+  destroyComment,
+  reportComment
 }
