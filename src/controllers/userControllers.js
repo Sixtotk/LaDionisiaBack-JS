@@ -90,15 +90,29 @@ const updateUser = async (req, res) => {
   }
 }
 
+const postDbUser = async (req,res) =>{
+  const { name, nickname, picture, email, family_name, given_name, logins_count } = req.body
+
+  try {
+    if (name && nickname && picture && email && family_name && given_name && logins_count) {
+      const user = await User.create(
+
+        { name, nickname, picture, email, family_name, given_name, logins_count }
+      );
+      res.status(201).json({ msg: 'El usuario se creó correctamente.', user })
+    } else res.status(400).json({ msg: 'El usuario no puede estar vacío.'})
+  } catch (err) { res.status(500).json(err.message) }
+}
+
 
 module.exports = {
   getUsers,
   registerUser,
   loginUser,
-  deleteUser
+  deleteUser,
   getAllDisabledUsers,
   disableUser,
   getUserById,
-  updateUser
-
+  updateUser,
+  postDbUser
 }

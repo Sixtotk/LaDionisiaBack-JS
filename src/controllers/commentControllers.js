@@ -39,14 +39,13 @@ const getAllReportedComments = async (req, res) => {
 }
 
 const postComment = async (req,res) =>{
-  const { content } = req.body
-  const { productId, /*userId*/ } = req.params
+  const { productId, userId, content } = req.body
 
   try {
     if (content) {
       const comment = await Comment.create(
 
-        { content, productId, /*userId*/ }
+        { content, productId, userId }
       );
       
       const product = await Product.findOne({ where: { id: productId } })
