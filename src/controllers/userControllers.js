@@ -56,6 +56,10 @@ const disableUser = async (req,res) =>{
   } catch (err) { res.status(500).json(err.message) }
 }
 
+const updateUser = async (req, res) => {
+  
+}
+
 
 
 module.exports = {
