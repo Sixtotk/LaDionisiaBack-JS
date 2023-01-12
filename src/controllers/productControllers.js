@@ -268,7 +268,7 @@ const getWineByRegion = async (req, res) => {
 
 const getWineByYear = async (req, res) => {
   try {
-    let {from, to} = req.query;
+    let {from, to} = req.body;
 
     const firstValue = Number(from)
     const secondValue = Number(to)
@@ -286,6 +286,15 @@ const getWineByYear = async (req, res) => {
   }
 };
 
+const disableProduct = async (req,res) =>{
+  const { productId } = req.params
+  try {
+    await Product.update({disabled:true},{ where: { id: productId } })
+
+    res.status(200).json({ msg: 'El producto ha sido desabilitado.' })
+  } catch (err) { res.status(500).json(err.message) }
+}
+
 
 module.exports = {
   getAllProducts,
@@ -299,5 +308,6 @@ module.exports = {
   getWineByYear,
   getProductsById,
   getWineByCountry,
-  getWineByRegion
+  getWineByRegion,
+  disableProduct
 };

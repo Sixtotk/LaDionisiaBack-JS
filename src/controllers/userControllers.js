@@ -8,6 +8,25 @@ const getUsers = async (req, res) => {
   } catch (err) { res.status(500).json(err.message) }
 }
 
+const getUserById = async (req, res) => {
+  try {
+    const { userId } = req.params
+    const userFound = await Comment.findByPk( userId );
+    if(!userFound) return res.status(400).json("user not found");
+    res.status(200).json(userFound);
+  } catch (err) {
+    res.status(500).send({ msg: "Error in the server", error: err.message });
+  }
+};
+
+const getAllDisabledUsers = async (req, res) => {
+  try { 
+    const disabledUsers = await User.findAll({ where: { disabled:true } });
+    if(!disabledUsers) {res.status(400).json("no existen usuarios desabilitados")}
+    else {res.status(200).json(disabledUsers)}
+  } catch (err) { res.status(500).json(err.message) }
+}
+
 const registerUser = async (req, res) => {
   const disabled = false
   const { sub } = req.body
@@ -28,8 +47,22 @@ const loginUser = async (req, res) => {
   } catch (err) { res.status(500).json(err.message) }
 }
 
+const disableUser = async (req,res) =>{
+  const { userId } = req.params
+  try {
+    await User.update({disabled:true},{ where: { id: userId } })
+
+    res.status(200).json({ msg: 'El Usuario ha sido desabilitado.' })
+  } catch (err) { res.status(500).json(err.message) }
+}
+
+
+
 module.exports = {
   getUsers,
   registerUser,
-  loginUser
+  loginUser,
+  getAllDisabledUsers,
+  disableUser,
+  getUserById
 }
