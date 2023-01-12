@@ -28,8 +28,20 @@ const loginUser = async (req, res) => {
   } catch (err) { res.status(500).json(err.message) }
 }
 
+const deleteUser = async (req, res) => {
+  try {
+    let { id } = req.params; 
+    let findUser = await User.findByPk( id ); 
+    if (!findUser) throw new Error("User not found");
+    await findUser.destroy();
+    res.status(200).json({ msg: "User deleted" });
+    
+  } catch (err) { res.status(500).json(err.message) }
+};
+
 module.exports = {
   getUsers,
   registerUser,
-  loginUser
+  loginUser,
+  deleteUser
 }
