@@ -57,7 +57,25 @@ const disableUser = async (req,res) =>{
 }
 
 const updateUser = async (req, res) => {
+  const { id } = req.params
+  const {name, nickname, email, family_name, given_name } = req.body 
   
+  try {
+    const userDb = await User.findByPk(id)
+
+    if(userDb){
+      const userDbUpdated = await userDbUpdated.update({
+        name: name,
+        nickname: nickname,
+        email: email,
+        family_name: family_name,
+        given_name: given_name,
+      })
+      return res.status(200).json("Usuario modificado con exito!")
+    }
+  } catch (err) {
+    res.status(500).send(err)
+  }
 }
 
 
