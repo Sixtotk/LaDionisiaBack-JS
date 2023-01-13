@@ -95,7 +95,7 @@ module.exports = {
   getUsers,
   registerUser,
   loginUser,
-  deleteUser
+  deleteUser,
   getAllDisabledUsers,
   disableUser,
   getUserById,
