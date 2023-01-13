@@ -11,8 +11,8 @@ require('./db.js');
 const server = express();
 
 const whiteList = [
-  "https://la-dionisia-front.vercel.app",
-  "http://localhost:3000"
+  "https://la-dionisia-front.vercel.app"
+  //"http://localhost:3000"
 ]
 
 server.name = 'API';
@@ -30,7 +30,7 @@ server.name = 'API';
 // };
 
 // server.use(cors(corsConfig));
-server.use(cors());
+server.use(cors({ origin: whiteList}));
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 server.use(bodyParser.json({ limit: '50mb' }));
 server.use(cookieParser());
