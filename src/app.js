@@ -12,7 +12,7 @@ const server = express();
 
 server.name = 'API';
 const corsConfig = {
-  origin: ['http://localhost:3000', 'https://la-dionisia-front.vercel.app/'],
+  origin: ['https://la-dionisia-front.vercel.app/'/*'http://localhost:3000',*/ ],
   credentials: true,
   methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
   allowedHeaders: ['Content-Type']
