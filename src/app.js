@@ -10,9 +10,20 @@ require('./db.js');
 
 const server = express();
 
+const whiteList = [
+  'https://la-dionisia-front.vercel.app',
+  'http://localhost:3000'
+]
+
 server.name = 'API';
 const corsConfig = {
-  origin: 'https://la-dionisia-front.vercel.app',
+  origin: function(origin, callback){
+    if(whiteList.indexOf(origin) !== -1 || !origin){
+      callback(null, true);
+    } else {
+      callback(new Error(" Not Allowed by CORS"));
+    }
+  },
   credentials: true,
   methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
   allowedHeaders: ['Content-Type']
