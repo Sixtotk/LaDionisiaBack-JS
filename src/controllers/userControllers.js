@@ -91,15 +91,18 @@ const updateUser = async (req, res) => {
 }
 
 const postDbUser = async (req,res) =>{
-  const { name, nickname, picture, email, family_name, given_name, logins_count } = req.body
+
+  const { sub } = req.body
+  const userAuth0 = await axios.get(`http://localhost:3001/auth0/user/${sub}`)
+  const {user_id} = userAuth0.data
 
   try {
-    if (name && nickname && picture && email && family_name && given_name && logins_count) {
+    if (user_id) {
       const user = await User.create(
 
-        { name, nickname, picture, email, family_name, given_name, logins_count }
+        { auth0id:user_id }
       );
-      res.status(201).json({ msg: 'El usuario se creó correctamente.', user })
+      res.status(201).json({ msg: 'El usuario se creó correctamente en DB.', user })
     } else res.status(400).json({ msg: 'El usuario no puede estar vacío.'})
   } catch (err) { res.status(500).json(err.message) }
 }

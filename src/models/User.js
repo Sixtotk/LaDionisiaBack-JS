@@ -2,41 +2,40 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   sequelize.define('user', {
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true
-    },
-    name: {
+    auth0id: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    nickname: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    picture: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-
-    email: {
-      type: DataTypes.STRING
-    },
-    family_name: {
-      type: DataTypes.STRING
-    },
-    given_name: {
-      type: DataTypes.STRING
-    },
-    logins_count: {
-      type: DataTypes.STRING
-    },
-    disabled: {
-      type: DataTypes.BOOLEAN,
-      defaultValue:false,
+      unique:true
     }
+    // name: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
+    // nickname: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
+    // picture: {
+    //   type: DataTypes.STRING,
+    //   allowNull: true,
+    // },
+
+    // email: {
+    //   type: DataTypes.STRING
+    // },
+    // family_name: {
+    //   type: DataTypes.STRING
+    // },
+    // given_name: {
+    //   type: DataTypes.STRING
+    // },
+    // logins_count: {
+    //   type: DataTypes.STRING
+    // },
+    // disabled: {
+    //   type: DataTypes.BOOLEAN,
+    //   defaultValue:false,
+    // }
     // },
     // createdInDb: { 
     //   type: DataTypes.BOOLEAN,
