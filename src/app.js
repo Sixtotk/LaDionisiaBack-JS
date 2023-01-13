@@ -16,20 +16,20 @@ const whiteList = [
 ]
 
 server.name = 'API';
-const corsConfig = {
-  origin: function(origin, callback){
-    if(whiteList.indexOf(origin) !== -1 || !origin){
-      callback(null, true);
-    } else {
-      callback(new Error(" Not Allowed by CORS"));
-    }
-  },
+// const corsConfig = {
+//   origin: function(origin, callback){
+//     if(whiteList.indexOf(origin) !== -1 || !origin){
+//       callback(null, true);
+//     } else {
+//       callback(new Error(" Not Allowed by CORS"));
+//     }
+//   },
   // credentials: true,
   // methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
   // allowedHeaders: ['Content-Type']
-};
+// };
 
-server.use(cors(corsConfig));
+// server.use(cors(corsConfig));
 server.use(cors());
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 server.use(bodyParser.json({ limit: '50mb' }));
