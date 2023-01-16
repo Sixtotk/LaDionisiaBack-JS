@@ -23,7 +23,7 @@ const getToken = async (req, res) => {
 }
 const getRoles = async (req, res) => {
     const { sub } = req.params
-    const response = await axios.get("http://localhost:3001/auth0/token");
+    const response = await axios.get("https://ladionisiaback-production.up.railway.app/auth0/token");
     const { token_type, access_token } = response.data
     var options = {
         method: 'GET',
@@ -42,7 +42,7 @@ const getRoles = async (req, res) => {
     });
 }
 const getUsers = async (req, res) => {
-    const response = await axios.get("http://localhost:3001/auth0/token");
+    const response = await axios.get("https://ladionisiaback-production.up.railway.app/auth0/token");
     const { token_type, access_token } = response.data
     var options = {
         method: 'GET',
@@ -62,7 +62,7 @@ const getUsers = async (req, res) => {
 }
 const getUserById = async (req, res) => {
     const { sub } = req.params
-    const response = await axios.get("http://localhost:3001/auth0/token");
+    const response = await axios.get("https://ladionisiaback-production.up.railway.app/auth0/token");
     const { token_type, access_token } = response.data
     var options = {
         method: 'GET',
@@ -82,7 +82,7 @@ const getUserById = async (req, res) => {
 }
 const getUserRoles = async (req, res) => {
     const { sub } = req.params
-    const response = await axios.get("http://localhost:3001/auth0/token");
+    const response = await axios.get("https://ladionisiaback-production.up.railway.app/auth0/token");
     const { token_type, access_token } = response.data
     // console.log(access_token)
     var options = {
@@ -103,7 +103,7 @@ const getUserRoles = async (req, res) => {
 }
 const addUserRole = async (req, res) => {
     const { sub } = req.body
-    const response = await axios.get("http://localhost:3001/auth0/token");
+    const response = await axios.get("https://ladionisiaback-production.up.railway.app/auth0/token");
     const { token_type, access_token } = response.data
     var options = {
         method: 'POST',
@@ -126,7 +126,7 @@ const addUserRole = async (req, res) => {
 }
 const removeUserRole = async (req, res) => {
     const { sub } = req.body
-    const response = await axios.get("http://localhost:3001/auth0/token");
+    const response = await axios.get("https://ladionisiaback-production.up.railway.app/auth0/token");
     const { token_type, access_token } = response.data
     var options = {
         method: 'DELETE',
@@ -149,7 +149,7 @@ const removeUserRole = async (req, res) => {
 }
 const updateUser = async (req, res) => {
     const { sub, nickname } = req.body
-    const response = await axios.get("http://localhost:3001/auth0/token");
+    const response = await axios.get("https://ladionisiaback-production.up.railway.app/auth0/token");
     const { token_type, access_token } = response.data
     var options = {
         method: 'PATCH',
