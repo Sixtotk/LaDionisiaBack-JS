@@ -5,6 +5,7 @@ const Products = require('./productRoutes')
 const auth0EndPointsRoutes = require('./auth0EndPointsRoutes');
 const userRoutes = require('./userRoutes');
 const Comment = require('./commentRoutes')
+const Emailer = require("./mailerRoutes")
 
 
 const router = Router();
@@ -15,6 +16,7 @@ router.use('/products', Products)
 router.use('/auth0', auth0EndPointsRoutes);
 router.use('/users', userRoutes);
 router.use('/comments', Comment)
+router.use('/sendEmail', Emailer)
 
 
 module.exports = router;
