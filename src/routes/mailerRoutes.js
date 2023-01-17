@@ -27,12 +27,10 @@ router.post("/", async (req,res) => {
                 to: userEmail,
                 subject: "Compra realizada!",
                 html: `
-            <h4> ¡Tu compra de los siguientes productos ha sido realizada con exito!</h4>
-            <ul>
+            <h2> ¡Tu compra de los siguientes productos ha sido realizada con exito!</h2
             ${products.map(p => {
-                    `<li>${p}</li>`
+                   return(`<p>${p.wine}</p>`)
                 })}
-            </ul>
             `
             })
             res.status(200).json("Compra realizada")
@@ -43,3 +41,4 @@ router.post("/", async (req,res) => {
 })
 
 module.exports = router;
+
