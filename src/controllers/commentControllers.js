@@ -38,6 +38,14 @@ const getAllReportedComments = async (req, res) => {
   } catch (err) { res.status(500).json(err.message) }
 }
 
+const getAllProductRatings = async (req, res) => {
+  try { 
+    const ratings = await Comment.findAll({ where: { reports:true } });
+
+    res.status(200).json(reportedComments)
+  } catch (err) { res.status(500).json(err.message) }
+}
+
 const postComment = async (req,res) =>{
   const { content } = req.body
   const { productId, /*userId*/ } = req.params
@@ -68,6 +76,19 @@ const updateComment = async (req,res) =>{
     res.status(200).json({ msg: 'El comentario  ha sido actualizado.' })
   } catch (err) { res.status(500).json(err.message) }
 }
+
+const updateRating = async (req,res) =>{
+  const { commentId } = req.params
+  const { newRating } = req.body
+  try {
+    await Comment.update(
+      { rating:newRating },
+      { where: {  id: commentId } }
+    )
+    res.status(200).json({ msg: 'El rating ha sido actualizado con exito.' })
+  } catch (err) { res.status(500).json(err.message) }
+}
+
 // usando el id del comment buscarlo en DB y updatear disabled a true
 const disableComment = async (req,res) =>{
   const { commentId } = req.params
@@ -106,5 +127,6 @@ module.exports = {
   getAllReportedComments,
   getCommentById,
   destroyComment,
-  reportComment
+  reportComment,
+  updateRating
 }

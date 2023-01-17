@@ -20,7 +20,6 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-
     email: {
       type: DataTypes.STRING
     },
@@ -42,7 +41,5 @@ module.exports = (sequelize) => {
     //   type: DataTypes.BOOLEAN,
     //   allowNull: false,
     //   defaultValue: true,
-
-
   });
 };

@@ -11,6 +11,10 @@ module.exports = (sequelize) => {
       type: DataTypes.BOOLEAN,
       defaultValue:false
     },
+    rating: {
+      type: DataTypes.INTEGER,
+      defaultValue:0
+    },
     disabled: {
       type: DataTypes.BOOLEAN,
       defaultValue:false,
