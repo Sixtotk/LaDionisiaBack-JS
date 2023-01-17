@@ -68,7 +68,7 @@ const getAllProducts = async (req, res) => {
       where: {
         disabled: false
       },
-      attributes: ["id", "type","wine", "winery", "year", "country", "region", "rating", "image","description","disabled","featured", "onSale", "totalSalesCurrent", "stock" ]
+      attributes: ["id", "type","price","wine", "winery", "year", "country", "region", "rating", "image","description","disabled","featured", "onSale", "totalSalesCurrent", "stock" ]
     })
 
       if (!allWinesDb.length){
@@ -79,6 +79,7 @@ const getAllProducts = async (req, res) => {
 						wine: e.wine,
 						winery: e.winery,
             year: e.year,
+            price:priceGen(e.rating),
 						country: e.country,
             region: e.region,
             rating: e.rating,
@@ -92,6 +93,7 @@ const getAllProducts = async (req, res) => {
 							wine: data[i].wine,
               winery: data[i].winery,
               year: data[i].year,
+              price: data[i].price,
               country: data[i].country,
               region: data[i].region,
 							rating: data[i].rating,
@@ -103,7 +105,7 @@ const getAllProducts = async (req, res) => {
             where: {
               disabled: false
             },
-						attributes: ["id", "type","wine", "winery", "year", "country", "region", "rating", "image","description","disabled","featured", "onSale", "totalSalesCurrent", "stock" ]
+						attributes: ["id", "type","price","wine", "winery", "year", "country", "region", "rating", "image","description","disabled","featured", "onSale", "totalSalesCurrent", "stock" ]
 
 					});                         
 				return res.status(200).json(allWinesDb)
@@ -126,6 +128,20 @@ const getProductsById = async (req, res) => {
   }
 };
 
+const priceGen =(rating) => {
+  const range = [,,,5,18,15,20,30,9,50,100,200],
+  seed = Math.abs(Math.sqrt(-1 * Math.log(1 - Math.random())) * Math.cos(1 * Math.PI * Math.random())
+  ),
+  max = range[rating],
+  min = range[rating-1],
+  price = (seed * (max - min) + min).toFixed(2)
+
+  return Math.ceil ((price - 0.50) / 0.50) * 0.50 + 0.50
+}
+
+
+
+
 const postProduct = async (req, res) => {
   
   try {
@@ -140,7 +156,8 @@ const postProduct = async (req, res) => {
       region,
       description
     } = req.body;
-  
+    const price = priceGen(rating)
+
     if(req.files?.image){
     const result = await uploadImageProduct(req.files.image.tempFilePath)
     image = result.url
@@ -152,6 +169,7 @@ const postProduct = async (req, res) => {
         wine,
         winery,
         year,
+        price,
         rating,
         country,
         region,
@@ -166,6 +184,7 @@ const postProduct = async (req, res) => {
       winery,
       year,
       rating,
+      price,
       country,
       region,
       image,
