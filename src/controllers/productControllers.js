@@ -129,12 +129,12 @@ const getProductsById = async (req, res) => {
 };
 
 const priceGen =(rating) => {
-  const range = [,,,5,18,15,20,30,9,50,100,200],
+  const range = [1,2,3,5,18,15,20,30,9,50,100,200],
   seed = Math.abs(Math.sqrt(-1 * Math.log(1 - Math.random())) * Math.cos(1 * Math.PI * Math.random())
   ),
   max = range[rating],
   min = range[rating-1],
-  price = (seed * (max - min) + min).toFixed(2)
+  price = (seed * (max - min +1) + min).toFixed(2)
 
   return Math.ceil ((price - 0.50) / 0.50) * 0.50 + 0.50
 }
