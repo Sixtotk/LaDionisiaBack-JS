@@ -32,6 +32,14 @@ module.exports = (sequelize) => {
     logins_count: {
       type: DataTypes.STRING
     },
+    purchase_history: {
+      type: DataTypes.ARRAY,
+      defaultValue:[]
+    },
+    favorites: {
+      type: DataTypes.ARRAY,
+      defaultValue:[]
+    },
     disabled: {
       type: DataTypes.BOOLEAN,
       defaultValue:false,

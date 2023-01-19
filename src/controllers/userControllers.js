@@ -91,6 +91,57 @@ const updateUser = async (req, res) => {
 }
 
 
+const favoritesToDb = async (req,res) =>{
+  const { userId } = req.params
+  const { productId } = req.query
+  try {
+    const userFavorites = User.findByPk({userId})
+    const middleWareSet = new Set.add(userFavorites.favorites)
+    const setNewFavorites = middleWareSet.add(productId)
+    const setToArray = Array.from(setNewFavorites)
+    await User.update({favorites:setToArray},{ where: { id: userId } })
+
+    res.status(200).json({ msg: 'Product succesfully added to favorites!.' })
+  } catch (err) { res.status(500).json(err.message) }
+}
+
+const deleteFavorite = async (req, res) => {
+  const { userId } = req.params
+  const { productId } = req.query
+  try { 
+    const userFavorites = User.findByPk({userId}) 
+    const middleWareSet = new Set.add(userFavorites.favorites)
+    const setFavoriteDeleted = middleWareSet.delete(productId)
+    const setToArray = Array.from(setFavoriteDeleted)
+    await User.update({favorites:setToArray},{ where: { id: userId } })
+
+    res.status(200).json({ msg: "Favorite deleted from the list!." });
+    
+  } catch (err) { res.status(500).json(err.message) }
+};
+
+const deleteAllFavorites = async (req, res) => {
+  const { userId } = req.params
+  try {  
+    await User.update({favorites:[]},{ where: { id: userId } })
+    res.status(200).json({ msg: "All Favorites deleted from the list!." });
+    
+  } catch (err) { res.status(500).json(err.message) }
+};
+
+const PurchaseHistoryToDb = async (req,res) =>{
+  const { userId } = req.params
+  const { saleData } = req.query
+  try {
+    const userPH = User.findByPk({userId})
+    const updatedPH = userPH.purchase_history.push(saleData)
+    await User.update({purchase_history:updatedPH},{ where: { id: userId } })
+
+    res.status(200).json({ msg: 'Sale data succesfully stored in DB!.' })
+  } catch (err) { res.status(500).json(err.message) }
+}
+
+
 module.exports = {
   getUsers,
   registerUser,
@@ -99,6 +150,9 @@ module.exports = {
   getAllDisabledUsers,
   disableUser,
   getUserById,
-  updateUser
-
+  updateUser,
+  favoritesToDb,
+  deleteFavorite,
+  deleteAllFavorites,
+  PurchaseHistoryToDb
 }
