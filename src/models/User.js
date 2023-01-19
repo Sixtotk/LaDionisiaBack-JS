@@ -33,11 +33,11 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING
     },
     purchase_history: {
-      type: DataTypes.ARRAY,
+      type: DataTypes.ARRAY(DataTypes.JSON),
       defaultValue:[]
     },
     favorites: {
-      type: DataTypes.ARRAY,
+      type: DataTypes.ARRAY(DataTypes.DECIMAL),
       defaultValue:[]
     },
     disabled: {
