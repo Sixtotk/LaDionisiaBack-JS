@@ -69,7 +69,7 @@ const updateComment = async (req,res) =>{
   const { commentId } = req.params
   const { content } = req.body
   try {
-    await Product.update(
+    await Comment.update(
       { content },
       { where: {  id: commentId } }
     )
@@ -116,6 +116,8 @@ const destroyComment = async (req,res) =>{
     res.status(200).json({ msg: 'El comentario ha sido borrado permanentemente.' })
   } catch (err) { res.status(500).json(err.message) }
 }
+
+
 
 
 module.exports = {
