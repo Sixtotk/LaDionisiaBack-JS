@@ -82,7 +82,7 @@ const getAllProducts = async (req, res) => {
             price:priceGen(e.rating),
 						country: e.country,
             region: e.region,
-            rating: e.rating,
+            rating: rateGen(e.rating),
             image: e.image,
             
             
@@ -139,6 +139,22 @@ const priceGen =(rating) => {
   return Math.ceil ((price - 0.50) / 0.50) * 0.50 + 0.50
 }
 
+
+const rateGen = (rating) => {
+  const
+    scores = [0, 20, 40, 50, 60, 70, 80, 90, 96, 98, 100],
+    max = scores[rating],
+    min = scores[rating - 1],
+    seed = Math.abs(
+      Math.sqrt(
+        -1 * Math.log(1 - Math.random())
+      )
+      *
+      Math.cos(1 * Math.PI * Math.random())
+    )
+  let result = Math.floor(seed * (max - min + 1) + min)
+  return (result > 100) ? 100 : result ;
+}
 
 
 
