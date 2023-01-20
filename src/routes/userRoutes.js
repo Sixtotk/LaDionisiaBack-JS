@@ -17,7 +17,7 @@ router.patch('/disable/:userId',disableUser)
 router.post('/register', registerUser)
 router.post('/login', loginUser)
 router.delete('/:id', deleteUser)
-router.delete('/favorite/:id', deleteFavorite)
+router.delete('/favorite/:userId', deleteFavorite)
 router.put('/:id', updateUser)
 
 
