@@ -1,17 +1,17 @@
-const { axios } = require("axios")
+const { axios } = require("axios").default
 const { User } = require('../db')
 
 const getUsers = async (req, res) => {
   try {
     const users = await User.findAll();
-    res.status(200).json({ users })
+    res.status(200).json( users )
   } catch (err) { res.status(500).json(err.message) }
 }
 
 const getUserById = async (req, res) => {
   try {
     const { userId } = req.params
-    const userFound = await Comment.findByPk( userId );
+    const userFound = await User.findByPk( userId );
     if(!userFound) return res.status(400).json("user not found");
     res.status(200).json(userFound);
   } catch (err) {
