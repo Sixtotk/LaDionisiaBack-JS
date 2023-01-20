@@ -1,10 +1,10 @@
-const { axios } = require("axios").default
+const axios = require("axios").default;
 const { User } = require('../db')
 
 const getUsers = async (req, res) => {
   try {
     const users = await User.findAll();
-    res.status(200).json( users )
+    res.status(200).json(users)
   } catch (err) { res.status(500).json(err.message) }
 }
 
@@ -29,6 +29,7 @@ const getAllDisabledUsers = async (req, res) => {
 
 const registerUser = async (req, res) => {
   const disabled = false
+  console.log(req.body)
   const { sub } = req.body
   const userAuth0 = await axios.get(`http://localhost:3001/auth0/user/${sub}`)
   const {user_id, name, nickname, picture, email,  family_name, given_name, logins_count} = userAuth0.data 
@@ -38,7 +39,10 @@ const registerUser = async (req, res) => {
       const user = await User.create( {user_id, name, nickname, picture, email,  family_name, given_name, logins_count, disabled})
       res.status(201).json({ msg: 'El usuario se creó correctamente.', user })
     } else res.status(400).json({ msg: 'El nombre no puede estar vacío.' })
-  } catch (err) { res.status(500).json(err.message) }
+  } catch (err) { 
+    // console.log(err.message)
+    res.status(500).json(err.message) 
+  }
 }
 
 const loginUser = async (req, res) => {
