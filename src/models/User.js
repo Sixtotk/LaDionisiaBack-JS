@@ -2,12 +2,6 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   sequelize.define('user', {
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true
-    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -21,7 +15,8 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
     email: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      unique:true
     },
     family_name: {
       type: DataTypes.STRING
@@ -31,6 +26,14 @@ module.exports = (sequelize) => {
     },
     logins_count: {
       type: DataTypes.STRING
+    },
+    purchase_history: {
+      type: DataTypes.ARRAY(DataTypes.JSON),
+      defaultValue:[]
+    },
+    favorites: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      defaultValue:[]
     },
     disabled: {
       type: DataTypes.BOOLEAN,
