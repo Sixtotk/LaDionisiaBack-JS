@@ -28,7 +28,13 @@ const getCommentById = async (req, res) => {
 
 const getAllDisabledComments = async (req, res) => {
   try {
-    const disabledComments = await Comment.findAll({ where: { disabled: true } });
+    const disabledComments = await Comment.findAll({
+      where: { disabled: true },
+      include: [
+        { model: User },
+        { model: Product }
+      ]
+    });
 
     res.status(200).json(disabledComments)
   } catch (err) { res.status(500).json(err.message) }
@@ -37,7 +43,12 @@ const getAllDisabledComments = async (req, res) => {
 
 const getAllReportedComments = async (req, res) => {
   try {
-    const reportedComments = await Comment.findAll({ where: { reports: true } });
+    const reportedComments = await Comment.findAll({
+      where: { reports: true },
+      include: [{
+        model: User
+      }]
+    });
 
     res.status(200).json(reportedComments)
   } catch (err) { res.status(500).json(err.message) }
@@ -93,6 +104,16 @@ const updateRating = async (req, res) => {
     res.status(200).json({ msg: 'El rating ha sido actualizado con exito.' })
   } catch (err) { res.status(500).json(err.message) }
 }
+const enableComment = async (req, res) => {
+  const { commentId } = req.params
+  try {
+    await Comment.update(
+      { disabled: false },
+      { where: { id: commentId } }
+    )
+    res.status(200).json({ msg: 'El comentario ha sido actualizado con exito.' })
+  } catch (err) { res.status(500).json(err.message) }
+}
 
 // usando el id del comment buscarlo en DB y updatear disabled a true
 const disableComment = async (req, res) => {
@@ -135,5 +156,6 @@ module.exports = {
   getCommentById,
   destroyComment,
   reportComment,
-  updateRating
+  updateRating,
+  enableComment
 }
