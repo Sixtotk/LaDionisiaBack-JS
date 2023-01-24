@@ -9,7 +9,9 @@ const updateProduct = async (req, res) => {
     const { id } = req.params
 
     const { winery, wine, rating, country, region, year, description, type, disabled, featured, onSale, totalSalesCurrent, stock, price } = req.body
-
+    if (!req.files?.image) {
+      image = undefined;
+    }
     if (req.files?.image) {
       const result = await uploadImageProduct(req.files.image.tempFilePath)
       image = result.url
