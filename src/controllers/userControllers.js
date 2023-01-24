@@ -118,7 +118,7 @@ const deleteFavorite = async (req, res) => {
 
   try {
     const user = await User.findOne({ where: { id: userId } });
-    const updatedFavorites = user.favorites.filter(id => id !== parseInt(productId));
+    const updatedFavorites = user.favorites.filter(fav => fav.id !== parseInt(productId));
     if (updatedFavorites.length > 0) {
       await User.update({ favorites: updatedFavorites }, { where: { id: userId } });
     } else {
