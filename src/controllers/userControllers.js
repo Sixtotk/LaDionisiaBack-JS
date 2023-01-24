@@ -1,5 +1,5 @@
 const axios = require("axios").default;
-const { User } = require('../db')
+const { User, Product } = require('../db')
 const { Op } = require("sequelize");
 
 const getUsers = async (req, res) => {
@@ -98,19 +98,14 @@ const updateUser = async (req, res) => {
 
 const favoritesToDb = async (req, res) => {
   const { userId } = req.params
-  const { productId } = req.query
+  const { product } = req.body
   try {
-    const userFavorites = await User.findOne({
-      where: {
-        id: userId,
-        favorites: { [Op.contains]: [productId] }
-      }
-    });
-    const user = await User.findOne({ where: { id: userId } });
-    if (!userFavorites) {
-      await User.update({
-        favorites: [...user.favorites, productId]
-      }, { where: { id: userId } });
+    const user = await User.findByPk(userId)
+    const favorites = user.favorites || []
+    const favorite = user.favorites.find(f => f.id === product.id)
+    if (!favorite) {
+      favorites.push(product)
+      await User.update({ favorites: favorites }, { where: { id: userId } })
     }
     res.status(200).json({ msg: 'Product succesfully added to favorites!.' })
   } catch (err) { res.status(500).json(err.message) }
@@ -151,7 +146,7 @@ const PurchaseHistoryToDb = async (req, res) => {
     const purchase_history = userPH.purchase_history || []
     purchase_history.push(saleData)
 
-    await User.update({purchase_history:purchase_history},{ where: { id: userId } })
+    await User.update({ purchase_history: purchase_history }, { where: { id: userId } })
     res.status(200).json({ msg: 'Sale succesfully added to history!.' })
   } catch (err) { res.status(500).json(err.message) }
 }
