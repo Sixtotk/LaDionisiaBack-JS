@@ -32,7 +32,7 @@ module.exports = (sequelize) => {
       defaultValue:[]
     },
     favorites: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      type: DataTypes.ARRAY(DataTypes.JSON),
       defaultValue:[]
     },
     disabled: {
