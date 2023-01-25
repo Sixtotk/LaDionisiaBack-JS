@@ -2,10 +2,9 @@ const { Router } = require("express");
 const router = Router()
 const { transporter } = require("../mailer/mailer");
 
-
-router.post("/", async (req,res) => {
+router.post("/", async (req, res) => {
     const { userEmail, newsletter, products } = req.body
-
+    console.log(req.body)
     try {
 
         if (newsletter) {
@@ -22,14 +21,21 @@ router.post("/", async (req,res) => {
             res.status(200).json("Email de suscripcion enviado")
 
         } else {
+            const totalPrice = products.reduce((acc, curr) => acc + (curr.quantity * curr.product.price), 0)
             await transporter.sendMail({
                 from: "La Dionisia <ladionisiapf@gmail.com>",
                 to: userEmail,
-                subject: "Compra realizada!",
+                subject: "Your purchase was succesfull!",
                 html: `
-            <h2> ¡Tu compra de los siguientes productos ha sido realizada con exito!</h2
+            <h2> The purchase of the products in your cart was successful</h2>
+            <h1>Your total purchase was : $${totalPrice}</h1>
             ${products.map(p => {
-                   return(`<p>${p.wine}</p>`)
+                    return (`
+                    <div>
+                    <p><b>${p.product.wine} <span>(X${p.quantity})</span><b/></p>
+                    <img src="${p.product.image}"/>
+                    </div>
+                   `)
                 })}
             `
             })

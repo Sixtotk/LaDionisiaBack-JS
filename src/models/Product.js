@@ -53,7 +53,7 @@ module.exports = (sequelize) => {
     },
     stock:{
       type: DataTypes.INTEGER,
-      defaultValue:1,
+      defaultValue:5,
     }
   }, {
     paranoid: true
