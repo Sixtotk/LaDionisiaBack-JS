@@ -344,6 +344,26 @@ const disableProduct = async (req,res) =>{
   } catch (err) { res.status(500).json(err.message) }
 }
 
+const getAllStock = async (req, res) => {
+  try {
+    const productStock = await Product.findAll({
+      where: { 
+        disabled: false
+      }});
+    if(!productStock) {return res.status(400).json("Stock not existent");
+  } else {
+    const stockArray = [];
+    productStock.map(e => stockArray.push(e.stock))
+    const stockSum = stockArray.reduce((a, b) => a + b, 0)
+    res.status(200).json(stockSum);
+  }
+  } catch (err) {
+    res.status(500).send({ msg: "Error in the server", error: err.message });
+  }
+};
+
+
+
 
 module.exports = {
   getAllProducts,
@@ -358,5 +378,6 @@ module.exports = {
   getProductsById,
   getWineByCountry,
   getWineByRegion,
-  disableProduct
+  disableProduct,
+  getAllStock
 };

@@ -1,9 +1,10 @@
 const { Router } = require("express");
-const { getAllProducts, getProductsById, disableProduct, postProduct, updateProduct, getDisabledProducts, getFeatured, getBestRated, getWineByYear, getWineTypes, getWineByCountry, getWineByRegion} = require("../controllers/productControllers");
+const { getAllProducts, getProductsById, getAllStock, disableProduct, postProduct, updateProduct, getDisabledProducts, getFeatured, getBestRated, getWineByYear, getWineTypes, getWineByCountry, getWineByRegion} = require("../controllers/productControllers");
 
 const router = Router();
 
 router.get('/', getAllProducts)
+router.get('/allStock', getAllStock)
 router.get('/disabled',getDisabledProducts)
 router.get('/featured',getFeatured)
 router.get('/wineTypes/:type',getWineTypes)
