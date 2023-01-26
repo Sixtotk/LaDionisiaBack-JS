@@ -1,22 +1,20 @@
 const { Router } = require("express");
 const router = Router()
 const { transporter } = require("../mailer/mailer");
-
+const fs = require('fs');
 router.post("/", async (req, res) => {
     const { userEmail, newsletter, products } = req.body
     console.log(req.body)
     try {
 
         if (newsletter) {
+            const file = fs.readFileSync('src/mailer/newsLetter/email.html');
+            console.log("./mailer/newsLetter/email.html")
             await transporter.sendMail({
                 from: "La Dionisia <ladionisiapf@gmail.com>",
                 to: userEmail,
                 subject: "Suscripcion exitosa!",
-                html: `<h4> Mensaje para ${userEmail}</h4>
-            <p> si este email no te pertenece por favor ignoralo</p>
-                            <h2> ¡Hola!</h2>
-            Te damos las gracias por suscribirte a "La Dionsia"
-            `
+                html: file
             })
             res.status(200).json("Email de suscripcion enviado")
 
@@ -42,6 +40,7 @@ router.post("/", async (req, res) => {
             res.status(200).json("Compra realizada")
         }
     } catch (error) {
+        console.log(error)
         res.status(500).json(error)
     }
 })
