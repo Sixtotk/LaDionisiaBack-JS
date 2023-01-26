@@ -32,7 +32,7 @@ const registerUser = async (req, res) => {
   const disabled = false
   console.log(req.body)
   const { sub } = req.body
-  const userAuth0 = await axios.get(`http://localhost:3001/auth0/user/${sub}`)
+  const userAuth0 = await axios.get(`https://ladionisiaback-js-production.up.railway.app/auth0/user/${sub}`)
   const { user_id, name, nickname, picture, email, family_name, given_name, logins_count } = userAuth0.data
 
   try {
